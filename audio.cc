@@ -8,11 +8,11 @@
 #include "simlab.h"
 
 #include <stdio.h>
-#include <pulse/simple.h>
+//#include <pulse/simple.h>
 
 extern simlab data;
 
-JNIEXPORT int play() {
+/*JNIEXPORT int play() {
 	pa_simple *s;
 	pa_sample_spec ss;
 
@@ -32,4 +32,4 @@ JNIEXPORT int record() {
 	printf( "record" );
 
 	return 0;
-}
+}*/

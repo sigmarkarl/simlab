@@ -152,7 +152,7 @@ public:
 };
 
 extern "C" JNIEXPORT int fiboer() {
-	data.buffer = (int)new c_fiboer();
+	data.buffer = (long)new c_fiboer();
 	data.type = -64;
 	data.length = -1;
 
@@ -160,7 +160,7 @@ extern "C" JNIEXPORT int fiboer() {
 }
 
 extern "C" JNIEXPORT int indexer() {
-	data.buffer = (int)new c_indexer();
+	data.buffer = (long)new c_indexer();
 	data.type = -32;
 	data.length = -1;
 
@@ -173,35 +173,35 @@ extern "C" JNIEXPORT int buffer( simlab bff ) {
 			if( bff.type == 32 ) {
 				int* ii = new int[1];
 				*ii = bff.buffer;
-				data.buffer = (int)new c_buffer<int>( ii, 1 );
+				data.buffer = (long)new c_buffer<int>( ii, 1 );
 			} else if( bff.type == 34 ) {
 				float* ff = new float[1];
 				*ff = *(float*)&bff.buffer;
-				data.buffer = (int)new c_buffer<float>( ff, 1 );
+				data.buffer = (long)new c_buffer<float>( ff, 1 );
 			}
 			data.length = -1;
 			data.type *= -1;
 		} else {
-			if( bff.type == 32 ) data.buffer = (int)new c_buffer<int>( (int*)bff.buffer, bff.length );
-			else if( bff.type == 34 ) data.buffer = (int)new c_buffer<float>( (float*)bff.buffer, bff.length );
-			else if( bff.type == 66 ) data.buffer = (int)new c_buffer<double>( (double*)bff.buffer, bff.length );
+			if( bff.type == 32 ) data.buffer = (long)new c_buffer<int>( (int*)bff.buffer, bff.length );
+			else if( bff.type == 34 ) data.buffer = (long)new c_buffer<float>( (float*)bff.buffer, bff.length );
+			else if( bff.type == 66 ) data.buffer = (long)new c_buffer<double>( (double*)bff.buffer, bff.length );
 		}
 	} else {
 		if( data.length > 0 ) {
-			if( data.type == 32 ) data.buffer = (int)new c_buffer<int>( (int*)data.buffer, data.length );
-			else if( data.type == 34 ) data.buffer = (int)new c_buffer<float>( (float*)data.buffer, data.length );
-			else if( data.type == 66 ) data.buffer = (int)new c_buffer<double>( (double*)data.buffer, data.length );
+			if( data.type == 32 ) data.buffer = (long)new c_buffer<int>( (int*)data.buffer, data.length );
+			else if( data.type == 34 ) data.buffer = (long)new c_buffer<float>( (float*)data.buffer, data.length );
+			else if( data.type == 66 ) data.buffer = (long)new c_buffer<double>( (double*)data.buffer, data.length );
 			data.length = -1;
 			data.type *= -1;
 		} else {
 			if( data.type == 32 ) {
 				int* ii = new int[1];
 				*ii = data.buffer;
-				data.buffer = (int)new c_buffer<int>( ii, 1 );
+				data.buffer = (long)new c_buffer<int>( ii, 1 );
 			} else if( data.type == 34 ) {
 				float* ff = new float[1];
 				*ff = *(float*)&data.buffer;
-				data.buffer = (int)new c_buffer<float>( ff, 1 );
+				data.buffer = (long)new c_buffer<float>( ff, 1 );
 			}
 			data.type *= -1;
 			data.length = -1;
@@ -212,8 +212,8 @@ extern "C" JNIEXPORT int buffer( simlab bff ) {
 }
 
 extern "C" JNIEXPORT int cnst( simlab cnst ) {
-	if( cnst.type == 32 ) data.buffer = (int)new c_const<int>( cnst.buffer );
-	else if( cnst.type == 34 ) data.buffer = (int)new c_const<float>( *((float*)&cnst.buffer) );
+	if( cnst.type == 32 ) data.buffer = (long)new c_const<int>( cnst.buffer );
+	else if( cnst.type == 34 ) data.buffer = (long)new c_const<float>( *((float*)&cnst.buffer) );
 	data.length = -1;
 	data.type = -cnst.type;
 
@@ -222,17 +222,17 @@ extern "C" JNIEXPORT int cnst( simlab cnst ) {
 
 template<typename T> void t_caster() {
 	if( data.type < 0 ) {
-		if( data.type == -32 ) data.buffer = (int)new c_caster<T,c_simlab<int> >( *(c_simlab<int>*)data.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_caster<T,c_simlab<double> >( *(c_simlab<double>*)data.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_caster<T,c_simlab<int> >( *(c_simlab<int>*)data.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_caster<T,c_simlab<double> >( *(c_simlab<double>*)data.buffer );
 	} else {
 		if( data.type == 32 ) {
 			int** iii = new int*[1];
 			*iii = (int*)data.buffer;
-			data.buffer = (int)new c_caster<T,int*>( *iii );
+			data.buffer = (long)new c_caster<T,int*>( *iii );
 		} else if( data.type == 66 ) {
 			double** ddd = new double*[1];
 			*ddd = (double*)data.buffer;
-			data.buffer = (int)new c_caster<T,double*>( *ddd );
+			data.buffer = (long)new c_caster<T,double*>( *ddd );
 		}
 	}
 }
@@ -246,18 +246,18 @@ extern "C" JNIEXPORT int caster( simlab t ) {
 
 template<typename T> void t_adder( T t, int len ) {
 	if( data.type > 0 ) {
-		if( data.type == 32 ) data.buffer = (int)new c_adder<T,int*,int>( t, (int*)data.buffer );
-		else if( data.type == 34 ) data.buffer = (int)new c_adder<T,float*,float>( t, (float*)data.buffer );
-		else if( data.type == 66 ) data.buffer = (int)new c_adder<T,double*,double>( t, (double*)data.buffer );
+		if( data.type == 32 ) data.buffer = (long)new c_adder<T,int*,int>( t, (int*)data.buffer );
+		else if( data.type == 34 ) data.buffer = (long)new c_adder<T,float*,float>( t, (float*)data.buffer );
+		else if( data.type == 66 ) data.buffer = (long)new c_adder<T,double*,double>( t, (double*)data.buffer );
 
 		data.type *= -1;
 		int min = len < data.length ? len : data.length;
 		int max = len > data.length ? len : data.length;
 		data.length = min == -1 ? max : min;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_adder<T,c_simlab<int> &,int>( t, *(c_simlab<int>*)data.buffer );
-		else if( data.type == -34 ) data.buffer = (int)new c_adder<T,c_simlab<float> &,float>( t, *(c_simlab<float>*)data.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_adder<T,c_simlab<double> &,double>( t, *(c_simlab<double>*)data.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_adder<T,c_simlab<int> &,int>( t, *(c_simlab<int>*)data.buffer );
+		else if( data.type == -34 ) data.buffer = (long)new c_adder<T,c_simlab<float> &,float>( t, *(c_simlab<float>*)data.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_adder<T,c_simlab<double> &,double>( t, *(c_simlab<double>*)data.buffer );
 	}
 }
 
@@ -283,12 +283,12 @@ extern "C" JNIEXPORT int inverter() {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_inverter<int*,int>( *(int**)ptr );
-		else if( data.type == 66 ) data.buffer = (int)new c_inverter<double*,double>( *(double**)ptr );
+		if( data.type == 32 ) data.buffer = (long)new c_inverter<int*,int>( *(int**)ptr );
+		else if( data.type == 66 ) data.buffer = (long)new c_inverter<double*,double>( *(double**)ptr );
 		data.type *= -1;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_inverter<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_inverter<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_inverter<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_inverter<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer );
 	}
 
 	return 1;
@@ -298,12 +298,12 @@ extern "C" JNIEXPORT int flipper( simlab val ) {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_flipper<int*,int>( *(int**)ptr, val.buffer );
-		else if( data.type == 66 ) data.buffer = (int)new c_flipper<double*,double>( *(double**)ptr, val.buffer );
+		if( data.type == 32 ) data.buffer = (long)new c_flipper<int*,int>( *(int**)ptr, val.buffer );
+		else if( data.type == 66 ) data.buffer = (long)new c_flipper<double*,double>( *(double**)ptr, val.buffer );
 		data.type *= -1;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_flipper<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer, val.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_flipper<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer, val.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_flipper<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer, val.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_flipper<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer, val.buffer );
 	}
 
 	return 1;
@@ -313,15 +313,15 @@ extern "C" JNIEXPORT int transposer( simlab cl, simlab rl ) {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_transposer<int*,int>( *(int**)ptr, cl.buffer, rl.buffer );
-		else if( data.type == 64 ) data.buffer = (int)new c_transposer<long long*,long long>( *(long long**)ptr, cl.buffer, rl.buffer );
-		else if( data.type == 66 ) data.buffer = (int)new c_transposer<double*,double>( *(double**)ptr, cl.buffer, rl.buffer );
+		if( data.type == 32 ) data.buffer = (long)new c_transposer<int*,int>( *(int**)ptr, cl.buffer, rl.buffer );
+		else if( data.type == 64 ) data.buffer = (long)new c_transposer<long long*,long long>( *(long long**)ptr, cl.buffer, rl.buffer );
+		else if( data.type == 66 ) data.buffer = (long)new c_transposer<double*,double>( *(double**)ptr, cl.buffer, rl.buffer );
 
 		data.type *= -1;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_transposer<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer, cl.buffer, rl.buffer );
-		else if( data.type == -64 ) data.buffer = (int)new c_transposer<c_simlab<long long>,long long>( *(c_simlab<long long>*)data.buffer, cl.buffer, rl.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_transposer<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer, cl.buffer, rl.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_transposer<c_simlab<int>,int>( *(c_simlab<int>*)data.buffer, cl.buffer, rl.buffer );
+		else if( data.type == -64 ) data.buffer = (long)new c_transposer<c_simlab<long long>,long long>( *(c_simlab<long long>*)data.buffer, cl.buffer, rl.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_transposer<c_simlab<double>,double>( *(c_simlab<double>*)data.buffer, cl.buffer, rl.buffer );
 	}
 
 	return 1;
@@ -331,14 +331,14 @@ template <typename T> void t_shifter( T & t, int siz) {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_shifter<int*,T,int>( *(int**)ptr, t, siz );
-		else if( data.type == 64 ) data.buffer = (int)new c_shifter<long long*,T,long long>( *(long long**)ptr, t, siz );
-		else if( data.type == 66 ) data.buffer = (int)new c_shifter<double*,T,double>( *(double**)ptr, t, siz );
+		if( data.type == 32 ) data.buffer = (long)new c_shifter<int*,T,int>( *(int**)ptr, t, siz );
+		else if( data.type == 64 ) data.buffer = (long)new c_shifter<long long*,T,long long>( *(long long**)ptr, t, siz );
+		else if( data.type == 66 ) data.buffer = (long)new c_shifter<double*,T,double>( *(double**)ptr, t, siz );
 		data.type *= -1;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_shifter<c_simlab<int>,T,int>( *(c_simlab<int>*)data.buffer, t, siz );
-		else if( data.type == -64 ) data.buffer = (int)new c_shifter<c_simlab<long long>,T,long long>( *(c_simlab<long long>*)data.buffer, t, siz );
-		else if( data.type == -66 ) data.buffer = (int)new c_shifter<c_simlab<double>,T,double>( *(c_simlab<double>*)data.buffer, t, siz );
+		if( data.type == -32 ) data.buffer = (long)new c_shifter<c_simlab<int>,T,int>( *(c_simlab<int>*)data.buffer, t, siz );
+		else if( data.type == -64 ) data.buffer = (long)new c_shifter<c_simlab<long long>,T,long long>( *(c_simlab<long long>*)data.buffer, t, siz );
+		else if( data.type == -66 ) data.buffer = (long)new c_shifter<c_simlab<double>,T,double>( *(c_simlab<double>*)data.buffer, t, siz );
 	}
 }
 
@@ -361,14 +361,14 @@ template<typename T> void t_matmuler( T & t, int l, int v ) {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_matmuler<int*,T,int>( *(int**)ptr, t, l, v );
-		else if( data.type == 64 ) data.buffer = (int)new c_matmuler<long long*,T,long long>( *(long long**)ptr, t, l, v );
-		else if( data.type == 66 ) data.buffer = (int)new c_matmuler<double*,T,double>( *(double**)ptr, t, l, v );
+		if( data.type == 32 ) data.buffer = (long)new c_matmuler<int*,T,int>( *(int**)ptr, t, l, v );
+		else if( data.type == 64 ) data.buffer = (long)new c_matmuler<long long*,T,long long>( *(long long**)ptr, t, l, v );
+		else if( data.type == 66 ) data.buffer = (long)new c_matmuler<double*,T,double>( *(double**)ptr, t, l, v );
 		data.type *= -1;
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_matmuler<c_simlab<int>,T,int>( *(c_simlab<int>*)data.buffer, t, l, v );
-		else if( data.type == -64 ) data.buffer = (int)new c_matmuler<c_simlab<long long>,T,long long>( *(c_simlab<long long>*)data.buffer, t, l, v );
-		else if( data.type == -66 ) data.buffer = (int)new c_matmuler<c_simlab<double>,T,double>( *(c_simlab<double>*)data.buffer, t, l, v );
+		if( data.type == -32 ) data.buffer = (long)new c_matmuler<c_simlab<int>,T,int>( *(c_simlab<int>*)data.buffer, t, l, v );
+		else if( data.type == -64 ) data.buffer = (long)new c_matmuler<c_simlab<long long>,T,long long>( *(c_simlab<long long>*)data.buffer, t, l, v );
+		else if( data.type == -66 ) data.buffer = (long)new c_matmuler<c_simlab<double>,T,double>( *(c_simlab<double>*)data.buffer, t, l, v );
 	}
 }
 
@@ -393,13 +393,13 @@ extern "C" JNIEXPORT int dfuncer( simlab dfunc ) {
 	if( data.type > 0 ) {
 		void** ptr = new void*[1];
 		*ptr = (void*)data.buffer;
-		if( data.type == 32 ) data.buffer = (int)new c_funcer<double,int*>( (double (*)(double))dfunc.buffer, *(int**)ptr );
-		else if( data.type == 64 ) data.buffer = (int)new c_funcer<double,long long*>( (double (*)(double))dfunc.buffer, *(long long**)ptr );
-		else if( data.type == 66 ) data.buffer = (int)new c_funcer<double,double*>( (double (*)(double))dfunc.buffer, *(double**)ptr );
+		if( data.type == 32 ) data.buffer = (long)new c_funcer<double,int*>( (double (*)(double))dfunc.buffer, *(int**)ptr );
+		else if( data.type == 64 ) data.buffer = (long)new c_funcer<double,long long*>( (double (*)(double))dfunc.buffer, *(long long**)ptr );
+		else if( data.type == 66 ) data.buffer = (long)new c_funcer<double,double*>( (double (*)(double))dfunc.buffer, *(double**)ptr );
 	} else {
-		if( data.type == -32 ) data.buffer = (int)new c_funcer<double,c_simlab<int> >( (double (*)(double))dfunc.buffer, *(c_simlab<int>*)data.buffer );
-		else if( data.type == -64 ) data.buffer = (int)new c_funcer<double,c_simlab<long long> >( (double (*)(double))dfunc.buffer, *(c_simlab<long long>*)data.buffer );
-		else if( data.type == -66 ) data.buffer = (int)new c_funcer<double,c_simlab<double> >( (double (*)(double))dfunc.buffer, *(c_simlab<double>*)data.buffer );
+		if( data.type == -32 ) data.buffer = (long)new c_funcer<double,c_simlab<int> >( (double (*)(double))dfunc.buffer, *(c_simlab<int>*)data.buffer );
+		else if( data.type == -64 ) data.buffer = (long)new c_funcer<double,c_simlab<long long> >( (double (*)(double))dfunc.buffer, *(c_simlab<long long>*)data.buffer );
+		else if( data.type == -66 ) data.buffer = (long)new c_funcer<double,c_simlab<double> >( (double (*)(double))dfunc.buffer, *(c_simlab<double>*)data.buffer );
 	}
 	data.type = -66;
 }

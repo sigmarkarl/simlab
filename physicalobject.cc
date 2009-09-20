@@ -17,6 +17,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <math.h>
+#include <stdio.h>
 
 #define  mn(a, b)  ((a) < (b) ? (a) :  (b))
 
@@ -344,7 +345,7 @@ void prender( PhysicalObject* pobj ) {
 }
 
 JNIEXPORT int createObject( char* name ) {
-	return (int)new PhysicalObject( name );
+	return (long)new PhysicalObject( name );
 }
 
 
@@ -357,7 +358,7 @@ JNIEXPORT int addObject( PhysicalObject* newpo ) {
 
 JNIEXPORT int parentObject() {
 	PhysicalObject* po = (PhysicalObject*)data.buffer;
-	return (int)po->parentObject;
+	return (long)po->parentObject;
 }
 
 JNIEXPORT int printChildObjects() {

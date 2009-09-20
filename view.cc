@@ -114,7 +114,7 @@ gint timeout_callback(gpointer image) {
 	GtkImage *imgWidget = (GtkImage*)image;
 	GdkImage *img;
 	gtk_image_get_image( imgWidget, &img, NULL );
-	simlab & tmr = timers[(int)img];
+	simlab & tmr = timers[(long)img];
 	run(tmr);
 	image_configure_event( NULL, NULL, img );
 	gtk_widget_queue_draw( (GtkWidget*)imgWidget );
@@ -143,7 +143,7 @@ gint gl_timeout_callback(gpointer widget) {
       TRUE,
       100, (i++)*5,8,8);*/
 
-	simlab & tmr = timers[(int)widget];
+	simlab & tmr = timers[(long)widget];
 	run(tmr);
 
 	//run(timers[(int)img]);
@@ -262,7 +262,7 @@ JNIEXPORT int surface( simlab timer, simlab time ) {
     g_signal_connect( G_OBJECT(draw), "button_press_event", G_CALLBACK(buttonpress_event), NULL );
     int tag = 0;
 	if( timer.type == 96 ) {
-		timers[(int)draw] = timer;
+		timers[(long)draw] = timer;
 		tag = g_timeout_add( time.buffer, gl_timeout_callback, draw );
 	}
 
@@ -296,7 +296,7 @@ JNIEXPORT int window( simlab timer, simlab time ) {
     int tag = 0;
 	if( timer.type == 96 ) {
 		printf("install timer %d\n", timer.buffer);
-		timers[(int)draw] = timer;
+		timers[(long)draw] = timer;
 		tag = g_timeout_add( time.buffer, gl_timeout_callback, draw );
 	}
 
@@ -356,7 +356,7 @@ JNIEXPORT int image( simlab chunk, simlab chunk2, simlab timer, simlab time ) {
     int tag = 0;
     if( timer.type == 96 ) {
     	printf("install timer %d\n", timer.buffer);
-    	timers[(int)img] = timer;
+    	timers[(long)img] = timer;
     	tag = g_timeout_add( time.buffer, timeout_callback, imgWidget );
     }
 

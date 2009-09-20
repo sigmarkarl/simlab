@@ -24,26 +24,26 @@
 #include <windows.h>
 #endif
 
-inline int dopen( char* name ) {
+inline long dopen( char* name ) {
 #ifndef WIN
-	return (int)dlopen( name, RTLD_GLOBAL );
+	return (long)dlopen( name, RTLD_GLOBAL );
 #else
-	return (int)GetModuleHandle( name );
+	return (long)GetModuleHandle( name );
 #endif
 }
 
-inline int dsym( int handle, char* symbol ) {
+inline long dsym( int handle, char* symbol ) {
 #ifndef WIN
-	return (int)dlsym( (void*)handle, symbol );
+	return (long)dlsym( (void*)handle, symbol );
 #else
-	return (int)GetProcAddress( (HINSTANCE)handle, symbol );
+	return (long)GetProcAddress( (HINSTANCE)handle, symbol );
 #endif
 }
 
 struct simlab {
-	int		buffer;
-	int		length;
-	int		type;
+	long		buffer;
+	long		length;
+	long		type;
 };
 
 inline int bytelength( int type, int length ) {

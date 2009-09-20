@@ -22,7 +22,7 @@ extern std::map<int,simlab>	timers;
 gint old_timeout_callback(gpointer image) {
 	//GtkImage *imgWidget = (GtkImage*)image;
 	GdkImage *img = (GdkImage*)image;
-	simlab & tmr = timers[(int)img];
+	simlab & tmr = timers[(long)img];
 	run(tmr);
 	//image_configure_event( NULL, NULL, img );
 	//gtk_widget_queue_draw( (GtkWidget*)imgWidget );
@@ -246,7 +246,7 @@ JNIEXPORT int raytrace( simlab timer, simlab time ) {
 	int tag = 0;
 	if( timer.type == 96 ) {
 		printf("install timer %d\n", timer.buffer);
-		timers[(int)image] = timer;
+		timers[(long)image] = timer;
 		tag = g_timeout_add( time.buffer, old_timeout_callback, image );
 	}
 	//g_signal_connect( widget, "button-press-event", G_CALLBACK(btnp), NULL );

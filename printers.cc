@@ -83,12 +83,12 @@ template <typename T,typename K> void t_print( const char* format, const char* e
 extern "C" JNIEXPORT int printer( simlab size ) {
 	if( data.type == 32 ) {
 		c_printer<int*,int> * printer = new c_printer<int*,int>( (int*)data.buffer, size.buffer );
-		data.buffer = (int)printer;
+		data.buffer = (long)printer;
 		data.type = -data.type;
 	} else if( data.type == 34 ) {
 		//float* f = (float*)data.buffer;
 		c_printer<float*,float> * printer = new c_printer<float*,float>( (float*)data.buffer, size.buffer );
-		data.buffer = (int)printer;
+		data.buffer = (long)printer;
 		data.type = -data.type;
 
 		/*c_printer<float*,float> & pf = *printer;
@@ -97,7 +97,7 @@ extern "C" JNIEXPORT int printer( simlab size ) {
 		}*/
 	} else if( data.type == 66 ) {
 		c_printer<double*,double> * printer = new c_printer<double*,double>( (double*)data.buffer, size.buffer );
-		data.buffer = (int)printer;
+		data.buffer = (long)printer;
 		data.type = -data.type;
 	}
 

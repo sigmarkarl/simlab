@@ -37,8 +37,8 @@ JNIEXPORT int func() {
 JNIEXPORT int help( simlab fnct ) {
 	int fnc = fnct.buffer;
 	if( helplib.size() == 0 ) {
-		helplib[(int)help] = "help( string functionname )\nShows help for the named function";
-		helplib[(int)tut] = "tut( int tut_num )\nShow tutorials";
+		helplib[(long)help] = "help( string functionname )\nShows help for the named function";
+		helplib[(long)tut] = "tut( int tut_num )\nShow tutorials";
 		/*helplib[(int)sys] = "sys( string cmd_name )\nRun system command";
 		helplib[(int)prim] = "prim()\nFills the current buffer with prime numbers in ordered sequence";
 		helplib[(int)fibo] = "fibo()\nFills the current buffer with fibonacci numbers in ordered sequence";

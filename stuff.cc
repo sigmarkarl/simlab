@@ -1499,7 +1499,7 @@ template <typename T> void t_dft( T* buffer, int length ) {
 		}
 	}
 	free( (void*)data.buffer );
-	data.buffer = (int)tmp;
+	data.buffer = (long)tmp;
 }
 
 template <typename T> void t_dct( T* buffer, int length ) {
@@ -1512,7 +1512,7 @@ template <typename T> void t_dct( T* buffer, int length ) {
 		}
 	}
 	free( (void*)data.buffer );
-	data.buffer = (int)tmp;
+	data.buffer = (long)tmp;
 }
 
 void t_dct( float* buffer, int length ) {
@@ -1525,7 +1525,7 @@ void t_dct( float* buffer, int length ) {
 		}
 	}
 	free( (void*)data.buffer );
-	data.buffer = (int)tmp;
+	data.buffer = (long)tmp;
 }
 
 template <typename T> void t_idct( T* buffer, int length ) {
@@ -1540,7 +1540,7 @@ template <typename T> void t_idct( T* buffer, int length ) {
 		tmp[k] /= data.length;
 	}
 	free( (void*)data.buffer );
-	data.buffer = (int)tmp;
+	data.buffer = (long)tmp;
 }
 
 void t_idct( float* buffer, int length ) {
@@ -1555,11 +1555,11 @@ void t_idct( float* buffer, int length ) {
 		tmp[k] /= data.length;
 	}
 	free( (void*)data.buffer );
-	data.buffer = (int)tmp;
+	data.buffer = (long)tmp;
 }
 
 template <typename T> int t_identity( T* buffer, int length ) {
-	int d = (int)sqrt( (double)length )+1;
+	int d = (long)sqrt( (double)length )+1;
 	for( int i = 0; i < length; i+=d ) {
 		buffer[i] = 1;
 	}
@@ -1599,7 +1599,7 @@ template <typename T, typename K, typename Q> void t_set( T* buffer, int length,
 	} else {
 		for( int k = 0; k < wlength; k++ ) {
 			//if( wh[k] < length ) {
-			buffer[ (int)wh[k] ] = (T)value[k%vlength];
+			buffer[ (long)wh[k] ] = (T)value[k%vlength];
 			//} else printf("wh%d %d\n",(int)wh[k], k);
 		}
 	}
@@ -1659,7 +1659,7 @@ template <typename T> void t_set( T* buffer, int length, simlab & where, simlab 
 
 template <typename T,typename K,typename Q> void t_draw( T* buffer, int length, K* ibuffer, int ilength, Q* dbuffer, int dlength ) {
 	for( int i = 0; i < ilength; i++ ) {
-		buffer[ (int)ibuffer[i] ] = (T)dbuffer[i];
+		buffer[ (long)ibuffer[i] ] = (T)dbuffer[i];
 	}
 }
 
@@ -1670,7 +1670,7 @@ template <typename T, typename K> void t_get( T* buffer, int length, K indx, int
 		if( indx[i] >= 0 && indx[i] < length ) ret[i] = buffer[(unsigned int)indx[i]];
 	}
 
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = ilength;
 }
 
@@ -1704,7 +1704,7 @@ template <typename T> void t_min( T* buffer, int length, int chunk, int size ) {
 		}
 	}
 
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 }
 
@@ -1738,7 +1738,7 @@ template <typename T> void t_max( T* buffer, int length, int chunk, int size ) {
 		}
 	}
 
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 }
 
@@ -1830,7 +1830,7 @@ template <typename T,typename K> void t_memcopy( T* buffer, int length, K* c_buf
 
 template <typename T, typename K> void t_fft( T* buffer, int length, K* cbuffer, int clength ) {
 	for( int c = 0; c < clength; c++ ) {
-		int chunk = (int)cbuffer[c];
+		int chunk = (long)cbuffer[c];
 		int val = (chunk+1)/2;
 		int sec = chunk/2;
 		for( int k = 0; k < length; k+=chunk ) {
@@ -1846,7 +1846,7 @@ template <typename T, typename K> void t_fft( T* buffer, int length, K* cbuffer,
 
 template <typename T, typename K> void t_awlet( T* buffer, int length, K* cbuffer, int clength ) {
 	for( int c = 0; c < clength; c++ ) {
-		int chunk = (int)cbuffer[c];
+		int chunk = (long)cbuffer[c];
 		int val = (chunk+1)/2;
 		int sec = chunk/2;
 		for( int k = 0; k < length; k+=chunk ) {
@@ -1862,7 +1862,7 @@ template <typename T, typename K> void t_awlet( T* buffer, int length, K* cbuffe
 
 template <typename T, typename K> void t_wlet( T* buffer, int length, K* cbuffer, int clength ) {
 	for( int c = 0; c < clength; c++ ) {
-		int chunk = (int)cbuffer[c];
+		int chunk = (long)cbuffer[c];
 		int val = (chunk+1)/2;
 		int sec = chunk/2;
 		for( int k = 0; k < length; k+=chunk ) {
@@ -2019,7 +2019,7 @@ template <typename T, typename K> void t_intersect( T* buffer, int length, K* in
 
 	T* retbuffer = new T[res.size()];
 	memcpy( retbuffer, &res[0], sizeof(T)*res.size() );
-	data.buffer = (int)retbuffer;
+	data.buffer = (long)retbuffer;
 	data.length = res.size();
 }
 
@@ -2054,7 +2054,7 @@ template <typename T> void t_mean( T* buffer, int length, int chunk, int size ) 
 		}
 	}
 
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 }
 
@@ -2079,7 +2079,7 @@ template <typename T> void t_sum( T* buffer, int length, int chunk, int size ) {
 		}
 	}
 
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 }
 
@@ -2125,7 +2125,7 @@ template <typename T, typename K> void t_matmul( T* buffer, int length, K* mulbu
 			}
 		}
 	}
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 }
 
@@ -2139,7 +2139,7 @@ template <typename T> void t_idx( T* buffer, int len, void* cmp, int bytelen ) {
 	int* bff = new int[idx.size()];
 	memcpy( bff, &idx[0], sizeof(int)*idx.size() );
 
-	data.buffer = (int)bff;
+	data.buffer = (long)bff;
 	data.type = 32;
 	data.length = idx.size();
 }
@@ -2237,7 +2237,7 @@ public:
 	K	index;
 
 	T operator[]( int ind ) {
-		return array[ (int)index[ind] ];
+		return array[ (long)index[ind] ];
 	}
 };*/
 
@@ -2268,7 +2268,7 @@ extern c_rnd<double>	dbl_rnd;
 
 void t_wrap( void* buffer, int length ) {
 	garbage();
-	data.buffer = (int)buffer;
+	data.buffer = (long)buffer;
 	data.length = length;
 }
 
@@ -2293,23 +2293,23 @@ JNIEXPORT int pseudoarr( simlab arr ) {
 	if( data.length == -1 ) {
 		PseudoBuffer<double>*	pb = (PseudoBuffer<double>*)data.buffer;
 		if( data.type == 66 ) {
-			data.buffer = (int)new c_arr<PseudoBuffer<double>,PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, *(PseudoBuffer<double>*)arr.buffer, pb->length() );
+			data.buffer = (long)new c_arr<PseudoBuffer<double>,PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, *(PseudoBuffer<double>*)arr.buffer, pb->length() );
 		}
 	} else if( data.type == 66 ) {
 		if( arr.type == 66 ) {
 			vvec.push_back( (void*)arr.buffer );
 			vvec.push_back( (void*)data.buffer );
-			data.buffer = (int)new c_arr<double*,double*,double>( *(double**)&vvec[vvec.size()-1], *(double**)&vvec[vvec.size()-2], data.length );
+			data.buffer = (long)new c_arr<double*,double*,double>( *(double**)&vvec[vvec.size()-1], *(double**)&vvec[vvec.size()-2], data.length );
 		} else if( arr.type == 34 ) {
 			vvec.push_back( (void*)arr.buffer );
 			vvec.push_back( (void*)data.buffer );
-			data.buffer = (int)new c_arr<double*,float*,double>( *(double**)&vvec[vvec.size()-1], *(float**)&vvec[vvec.size()-2], data.length );
+			data.buffer = (long)new c_arr<double*,float*,double>( *(double**)&vvec[vvec.size()-1], *(float**)&vvec[vvec.size()-2], data.length );
 		} else if( arr.type == 32 ) {
 			vvec.push_back( (void*)arr.buffer );
 			vvec.push_back( (void*)data.buffer );
-			data.buffer = (int)new c_arr<double*,int*,double>( *(double**)&vvec[vvec.size()-1], *(int**)&vvec[vvec.size()-2], data.length );
+			data.buffer = (long)new c_arr<double*,int*,double>( *(double**)&vvec[vvec.size()-1], *(int**)&vvec[vvec.size()-2], data.length );
 		}
-		//data.buffer = (int)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
+		//data.buffer = (long)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
 	}
 	data.length = -1;
 
@@ -2319,11 +2319,11 @@ JNIEXPORT int pseudoarr( simlab arr ) {
 JNIEXPORT int pseudotran( simlab c, simlab r ) {
 	if( data.length == -1 ) {
 		PseudoBuffer<double>*	pb = (PseudoBuffer<double>*)data.buffer;
-		if( data.type == 66 ) data.buffer = (int)new c_trans<PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, c.buffer, r.buffer, pb->length() );
+		if( data.type == 66 ) data.buffer = (long)new c_trans<PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, c.buffer, r.buffer, pb->length() );
 	} 	else if( data.type == 66 ) {
 		vvec.push_back( (void*)data.buffer );
-		data.buffer = (int)new c_trans<double*,double>( *(double**)&vvec[vvec.size()-1], c.buffer, r.buffer, data.length );
-		//data.buffer = (int)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
+		data.buffer = (long)new c_trans<double*,double>( *(double**)&vvec[vvec.size()-1], c.buffer, r.buffer, data.length );
+		//data.buffer = (long)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
 	}
 	data.length = -1;
 
@@ -2333,20 +2333,20 @@ JNIEXPORT int pseudotran( simlab c, simlab r ) {
 JNIEXPORT int pseudodfunc( simlab func ) {
 	if( data.length == -1 ) {
 		//PseudoBuffer<double>*	pb = (PseudoBuffer<double>*)data.buffer;
-		if( data.type == 66 ) data.buffer = (int)new c_dfunc<PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, ((PseudoBuffer<double>*)data.buffer)->length(), (double (*)(double))func.buffer );
-		else if( data.type == 34 ) data.buffer = (int)new c_dfunc<PseudoBuffer<float>,float>( *(PseudoBuffer<float>*)data.buffer, ((PseudoBuffer<float>*)data.buffer)->length(), (double (*)(double))func.buffer );
+		if( data.type == 66 ) data.buffer = (long)new c_dfunc<PseudoBuffer<double>,double>( *(PseudoBuffer<double>*)data.buffer, ((PseudoBuffer<double>*)data.buffer)->length(), (double (*)(double))func.buffer );
+		else if( data.type == 34 ) data.buffer = (long)new c_dfunc<PseudoBuffer<float>,float>( *(PseudoBuffer<float>*)data.buffer, ((PseudoBuffer<float>*)data.buffer)->length(), (double (*)(double))func.buffer );
 	} 	else if( data.type == 66 ) {
 		vvec.push_back( (void*)data.buffer );
-		data.buffer = (int)new c_dfunc<double*,double>( *(double**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
-		//data.buffer = (int)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
+		data.buffer = (long)new c_dfunc<double*,double>( *(double**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
+		//data.buffer = (long)new c_dfunc<double*,double>( *(double**)&data.buffer, data.length, (double (*)(double))func.buffer );
 	} else if( data.type == 34 ) {
 		//float*	fb = (float*)data.buffer;
 		vvec.push_back( (void*)data.buffer );
-		data.buffer = (int)new c_dfunc<float*,float>( *(float**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
+		data.buffer = (long)new c_dfunc<float*,float>( *(float**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
 	} else if( data.type == 32 ) {
 		//int*	ib = (int*)data.buffer;
 		vvec.push_back( (void*)data.buffer );
-		data.buffer = (int)new c_dfunc<int*,int>( *(int**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
+		data.buffer = (long)new c_dfunc<int*,int>( *(int**)&vvec[vvec.size()-1], data.length, (double (*)(double))func.buffer );
 	}
 	data.length = -1;
 
@@ -2356,7 +2356,7 @@ JNIEXPORT int pseudodfunc( simlab func ) {
 JNIEXPORT int createarrange( simlab index ) {
 	if( data.type == 66 ) {
 		if( index.type == 32 ) {
-			//data.buffer = (int)new c_arr<double*,int*>( (double*)data.buffer, (int*)index.buffer );
+			//data.buffer = (long)new c_arr<double*,int*>( (double*)data.buffer, (int*)index.buffer );
 		}
 	}
 
@@ -2449,7 +2449,7 @@ JNIEXPORT int New( ... ) {
 		jobject obj = javaenv->NewGlobalRef( tempobj );
 		javaenv->DeleteLocalRef( tempobj );
 
-		//current = (int)obj;
+		//current = (long)obj;
 		jobj = obj;
 
 		std::string sig = "(";
@@ -2470,7 +2470,7 @@ JNIEXPORT int Data() {
 
 	simlab* data = new simlab;
 
-	data->buffer = (int)javaenv->GetDirectBufferAddress( obj );
+	data->buffer = (long)javaenv->GetDirectBufferAddress( obj );
 	data->length = javaenv->GetDirectBufferCapacity( obj );
 
 	if( javaenv->IsInstanceOf( obj, javaenv->FindClass( "Ljava/nio/DoubleBuffer;" ) ) ) {
@@ -2482,7 +2482,7 @@ JNIEXPORT int Data() {
 	}
 
 	//java = 0;
-	current = (int)data;
+	current = (long)data;
 
 	javaenv->DeleteGlobalRef( obj );
 
@@ -2522,7 +2522,7 @@ JNIEXPORT int Java() {
 			jobject gref = javaenv->NewGlobalRef( lref );
 			javaenv->DeleteLocalRef( lref );
 
-			return (int)gref;
+			return (long)gref;
 		}
 	}
 	return current;
@@ -2600,7 +2600,7 @@ JNIEXPORT int getptr( int byteoffset ) {
 
 JNIEXPORT int welcome() {
 	simlab str;
-	str.buffer =  (int)"Welcome to SimLab 2.0";
+	str.buffer =  (long)"Welcome to SimLab 2.0";
 	echo( str );
 	return 0;
 }
@@ -2662,7 +2662,7 @@ JNIEXPORT int create( int type, ... ) {
 	va_end( argptr );
 
 	garbage();
-	data.buffer = (int)malloc( bytelength( type, total ) );
+	data.buffer = (long)malloc( bytelength( type, total ) );
 	data.length = total;
 	data.type = type;
 
@@ -2709,7 +2709,7 @@ JNIEXPORT int echo( simlab str, ... ) {
 		here += bytesize;
 		int value = 0;
 		memcpy( here, &value, sizeof(int) );
-		passcurr = (int)&passnext;
+		passcurr = (long)&passnext;
 		int ret = func( passnext );
 		return ret;*/
 
@@ -2729,7 +2729,7 @@ JNIEXPORT int pair( int fnc1, int fnc2, ... ) {
 JNIEXPORT int resize( simlab len ) {
 	int bytelen = bytelength( data.type, len.buffer );
 	data.length = len.buffer;
-	data.buffer = (int)realloc( (void*)data.buffer, bytelen );
+	data.buffer = (long)realloc( (void*)data.buffer, bytelen );
 
 	return 1;
 }
@@ -2942,7 +2942,7 @@ JNIEXPORT int type( simlab type ) {
 	else oldtype = (data.type/8)*8;
 
 	//int newbytelen = bytelength( data.type, data.length );
-	data.length = (int)(((long)data.length*oldtype)/(long)newtype);
+	data.length = (long)(((long)data.length*oldtype)/(long)newtype);
 
 	data.type = type.buffer;
 
@@ -3279,7 +3279,7 @@ JNIEXPORT int glresize( simlab width, simlab height ) {
 	float hgt = height.type == 32 ? (float)height.buffer : *((float*)&height.buffer);
 
 	float fAspect = wid / hgt;
-	glViewport(0, 0, (int)wid, (int)hgt);
+	glViewport(0, 0, (long)wid, (long)hgt);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0f, fAspect, 1.0f, 10000.0f);
@@ -3340,7 +3340,7 @@ JNIEXPORT int var() {
 	SphereObject	*sphereObject = new SphereObject();
 	//SphereObject	sphereObject();
 
-	return (int)sphereObject;
+	return (long)sphereObject;
 }*/
 
 JNIEXPORT int show( char* name ) {
@@ -3357,7 +3357,7 @@ JNIEXPORT int zero() {
 JNIEXPORT int vector( int type, int length ) {
 	data.type = type;
 	data.length = length;
-	data.buffer = (int)malloc( bytelength(type,length) );
+	data.buffer = (long)malloc( bytelength(type,length) );
 
 	return current;
 }
@@ -3381,7 +3381,7 @@ JNIEXPORT int copy( simlab cop ) {
 
 JNIEXPORT int cast( simlab type ) {
 	simlab cop = data;
-	data.buffer = (int)malloc( bytelength( type.buffer, data.length ) );
+	data.buffer = (long)malloc( bytelength( type.buffer, data.length ) );
 	data.type = type.buffer;
 	copy( cop );
 	//garbage();
@@ -3394,7 +3394,7 @@ JNIEXPORT int clnn() {
 	void* buffer = malloc( size );
 	memcpy( buffer, (void*)data.buffer, size );
 	garbage();
-	data.buffer = (int)buffer;
+	data.buffer = (long)buffer;
 
 	return current;
 }
@@ -3814,7 +3814,7 @@ JNIEXPORT int ret() {
 JNIEXPORT int addold( simlab value ) {
 	/*if( 1 ) { //value.length == -1 ) {
 		c_simlab<float> & st = *((c_simlab<float>*)value.buffer);
-		//int val = (int)&st;
+		//int val = (long)&st;
 		if( value.type == -66 ) t_add<c_simlab<double>& >( *(c_simlab<double>*)value.buffer, data.length );
 		else if( value.type == -34 ) {
 			printf( "trying float %f\n", st[1] );
@@ -4021,7 +4021,7 @@ JNIEXPORT int lg10( simlab wh ) {
 	func.type = 32;
 	func.length = 0;
 
-	func.buffer = (int)log10;
+	func.buffer = (long)log10;
 	dfunc( func, wh );
 
 	return current;
@@ -4032,7 +4032,7 @@ JNIEXPORT int lg2( simlab wh ) {
 	func.type = 32;
 	func.length = 0;
 
-	func.buffer = (int)log2;
+	func.buffer = (long)log2;
 	dfunc( func, wh );
 
 	return current;
@@ -4043,7 +4043,7 @@ JNIEXPORT int ln( simlab wh ) {
 	func.type = 32;
 	func.length = 0;
 
-	func.buffer = (int)log;
+	func.buffer = (long)log;
 	dfunc( func, wh );
 
 	return current;
@@ -4055,10 +4055,10 @@ JNIEXPORT int cosine( simlab wh ) {
 	func.length = 0;
 
 	if( data.type == 34 ) {
-		func.buffer = (int)cos;
+		func.buffer = (long)cos;
 		dfunc( func, wh );
 	} else {
-		func.buffer = (int)cosf;
+		func.buffer = (long)cosf;
 		ffunc( func, wh );
 	}
 
@@ -4071,10 +4071,10 @@ JNIEXPORT int cosine( simlab wh ) {
 	func.length = 0;
 
 	if( data.type == 34 ) {
-		func.buffer = (int)acos;
+		func.buffer = (long)acos;
 		dfunc( func, wh );
 	} else {
-		func.buffer = (int)acosf;
+		func.buffer = (long)acosf;
 		ffunc( func, wh );
 	}
 	return current;
@@ -4086,10 +4086,10 @@ JNIEXPORT int sine( simlab wh ) {
 	func.length = 0;
 
 	if( data.type == 34 ) {
-		func.buffer = (int)sin;
+		func.buffer = (long)sin;
 		dfunc( func, wh );
 	} else {
-		func.buffer = (int)sinf;
+		func.buffer = (long)sinf;
 		ffunc( func, wh );
 	}
 	return 1;
@@ -4101,10 +4101,10 @@ JNIEXPORT int sine( simlab wh ) {
 	func.length = 0;
 
 	if( data.type == 34 ) {
-		func.buffer = (int)asin;
+		func.buffer = (long)asin;
 		dfunc( func, wh );
 	} else {
-		func.buffer = (int)acosf;
+		func.buffer = (long)acosf;
 		ffunc( func, wh );
 	}
 	return current;
@@ -4128,7 +4128,7 @@ JNIEXPORT int extract( simlab val, simlab cnk ) {
 
 	char*	src = (char*)data.buffer;
 	char* 	dst = (char*)realloc( NULL, (tchk*tlen)/tcnk );
-	data.buffer = (int)dst;
+	data.buffer = (long)dst;
 	data.length = (value*data.length)/chunk;
 
 	for( int i = 0; i < tlen; i+=tcnk ) {
@@ -4246,7 +4246,7 @@ JNIEXPORT int fft() {
 		fftw_execute( p );
 		fftw_destroy_plan( p );
 		free( (void*)data->buffer );
-		data->buffer = (int)out;*/
+		data->buffer = (long)out;*/
 	}
 	return current;
 }
@@ -4311,7 +4311,7 @@ JNIEXPORT int cln() {
 	simlab* sl = (simlab*)vector( data->type, data->length );
 	memcpy( (void*)sl->buffer, (void*)data->buffer, bytelength(data->type,data->length) );
 
-	return (int)sl;
+	return (long)sl;
 }
 
 JNIEXPORT int divd( simlab value ) {
@@ -5131,7 +5131,7 @@ JNIEXPORT int dummy() {
 
 JNIEXPORT int str( simlab str ) {
 	data = str;
-	data.buffer = (int)new char[str.length];
+	data.buffer = (long)new char[str.length];
 	strcpy( (char*)data.buffer, (char*)str.buffer );
 
 	return current;
@@ -5174,7 +5174,7 @@ JNIEXPORT int jpegread( simlab filename ) {
 
     fclose(fp);
 
-    data.buffer = (int)dt;
+    data.buffer = (long)dt;
     data.type = 8;
     data.length = retlen;
 
@@ -5190,7 +5190,7 @@ JNIEXPORT int fileread( simlab filename ) {
 		fseek( f, 0, SEEK_END );
 		long size = ftell( f );
 		fseek( f, 0, SEEK_SET );
-		data.buffer = (int)new char[size];
+		data.buffer = (long)new char[size];
 		data.type = 8;
 		data.length = size;
 		fread( (void*)data.buffer, 1, size, f );
@@ -5289,10 +5289,10 @@ JNIEXPORT int gcd( simlab* check ) {
 
 JNIEXPORT int factor() {
 	//simlab* data = (simlab*)current;
-	/*if( data->type == 66 ) return (int)t_factor( (double*)data->buffer, data->length );
-	else if( data->type == 34 ) return (int)t_factor( (float*)data->buffer, data->length );
-	else if( data->type == 33 ) return (int)t_factor( (unsigned int*)data->buffer, data->length );
-	else if( data->type == 32 ) return (int)t_factor( (int*)data->buffer, data->length );*/
+	/*if( data->type == 66 ) return (long)t_factor( (double*)data->buffer, data->length );
+	else if( data->type == 34 ) return (long)t_factor( (float*)data->buffer, data->length );
+	else if( data->type == 33 ) return (long)t_factor( (unsigned int*)data->buffer, data->length );
+	else if( data->type == 32 ) return (long)t_factor( (int*)data->buffer, data->length );*/
 	return current;
 }
 
@@ -5542,7 +5542,7 @@ JNIEXPORT int initjava() {
 	if( mycls != NULL ) {
 		jmethodID mid = javaenv->GetStaticMethodID( mycls, "command", "()V" );
 		javaenv->ExceptionDescribe();
-		printf( "ok %d\n", (int)mid );
+		printf( "ok %d\n", (long)mid );
 		if( mid != NULL ) {
 			javaenv->CallStaticVoidMethod( mycls, mid );
 		}
@@ -5552,7 +5552,7 @@ JNIEXPORT int initjava() {
 JNIEXPORT int reg() {
 	jclass cls = javaenv->FindClass("Lsimple/Simlab;");
 	javaenv->ExceptionDescribe();
-	printf( "%d\n", (int)cls );
+	printf( "%d\n", (long)cls );
 
 	return 0;
 }
@@ -5599,7 +5599,7 @@ JNIEXPORT int gui() {
 			javaenv->CallStaticVoidMethod(cls, mainmid, splt);
 			javaenv->ExceptionDescribe();
 			//jobject obb = javaenv->FindClass( "Lsimple/Simlab;" );
-			//printf( "jojo %d\n", (int)obb );
+			//printf( "jojo %d\n", (long)obb );
 			//jvm->DestroyJavaVM();
 		}
 	}

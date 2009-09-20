@@ -64,7 +64,7 @@ JNIEXPORT int oldload( simlab filename, ... ) {
 		lab = pLab[k];
 		if( lab.type == 32 ) {
 			if( l)
-			*(int*)(&buffer[t]) = (int)&lab.buffer;
+			*(long*)(&buffer[t]) = (long)&lab.buffer;
 			t += 32/8;
 		}
 	}

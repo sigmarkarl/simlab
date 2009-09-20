@@ -41,7 +41,7 @@ int parseParameters( int bytesize ) {
 			c_str[ str.length() - 2 ] = 0;
 
 			simlab there;
-			there.buffer = (int)c_str;
+			there.buffer = (long)c_str;
 			there.type = 8;
 			there.length = str.size() - 2;
 			char* here = (char*)&passnext;
@@ -71,7 +71,7 @@ int parseParameters( int bytesize ) {
 			simlab adata;
 			adata.length = d_vec.size();
 			adata.type = 66;
-			adata.buffer = (int)new double[adata.length];
+			adata.buffer = (long)new double[adata.length];
 			memcpy( (void*)(adata.buffer), &d_vec[0], adata.length*sizeof(double) );
 
 			char* here = (char*)&passnext;
@@ -118,7 +118,7 @@ herem:
 				char* here = (char*)&passnext;
 				here += bytesize;
 				simlab val;
-				val.buffer = -(int)(value*mul+add);
+				val.buffer = -(long)(value*mul+add);
 				val.type = 32;
 				val.length = 0;
 
@@ -156,8 +156,8 @@ herem:
 				char* here = (char*)&passnext;
 				here += bytesize;
 				//sig += "I";
-				memcpy( here, &value, sizeof(int) );
-				return parseParameters( bytesize+sizeof(int) );
+				memcpy( here, &value, sizeof(long) );
+				return parseParameters( bytesize+sizeof(long) );
 			}*/
 		} else if( result[0] >= '0' && result[0] <= '9' ) {
 			int value = result[0] - '0';
@@ -197,7 +197,7 @@ here:
 				char* here = (char*)&passnext;
 				here += bytesize;
 				simlab val;
-				val.buffer = (int)(value*mul+add);
+				val.buffer = (long)(value*mul+add);
 				val.type = 32;
 				val.length = 0;
 
@@ -235,7 +235,7 @@ here:
 				return parseParameters( bytesize+sizeof(simlab) );
 			} else {
 				simlab ftch;
-				ftch.buffer = (int)result;
+				ftch.buffer = (long)result;
 				ftch.type = 8;
 				ftch.length = strlen( result );
 				simlab tmp = data;
@@ -253,8 +253,8 @@ here:
 				int val = 0;
 				if( result[0] == 't' && result[1] == 'r' && result[2] == 'u' ) val = 1;
 				char* here = (char*)&passnext;
-				memcpy( here+bytesize, &val, sizeof(int) );
-				return parseParameters( func, bytesize+sizeof(int) );
+				memcpy( here+bytesize, &val, sizeof(long) );
+				return parseParameters( func, bytesize+sizeof(long) );
 			}*/
 		}
 	} else {
@@ -263,7 +263,7 @@ here:
 		char* here = (char*)&passnext;
 		here += bytesize;
 		int value = 0;
-		memcpy( here, &value, sizeof(int) );
+		memcpy( here, &value, sizeof(long) );
 	}
 
 	bsize = bytesize;
@@ -291,7 +291,7 @@ JNIEXPORT int run( simlab runner ) {
 }
 
 JNIEXPORT int compile( simlab fnc, ... ) {
-	//passcurr += sizeof(int);
+	//passcurr += sizeof(long);
 	//int (*func)( ... );
 	//func = (int (*)(...))fnc.buffer;
 	//return func( *(passa<11>*)(passcurr) )+1;
@@ -302,7 +302,7 @@ JNIEXPORT int compile( simlab fnc, ... ) {
 	if( data.buffer == 0 ) {
 		data.length = datasize+1;
 		data.type = 96;
-		data.buffer = (int)new simlab[ data.length ];
+		data.buffer = (long)new simlab[ data.length ];
 	} else {
 		int nz = data.length+datasize+1;
 		if( nz > data.length ) {
@@ -325,12 +325,12 @@ JNIEXPORT int interprete( simlab cmd ) {
 	if( *command == '"' ) {
 		command[ strlen(command)-1 ] = 0;
 		simlab str;
-		str.buffer = (int)(command+1);
+		str.buffer = (long)(command+1);
 		echo( str );
 	} else {
 		char*	result = strtok( command, " (_\n" );
 		int func = dsym( module, result );
-		if( func != 0 /*&& (jobj == 0 || jcls == 0 || func == (int)store || func == (int)fetch || func == (int)Class || func == (int)Data || func == (int)create)*/ ) {
+		if( func != 0 /*&& (jobj == 0 || jcls == 0 || func == (long)store || func == (long)fetch || func == (long)Class || func == (long)Data || func == (long)create)*/ ) {
 			simlab fnc;
 			fnc.buffer = func;
 			fnc.type = 32;
@@ -338,7 +338,7 @@ JNIEXPORT int interprete( simlab cmd ) {
 			parseParameters( 0 );
 			compile( fnc, passnext );
 
-			//passcurr = (int)&passnext;
+			//passcurr = (long)&passnext;
 			//((int (*)(...))func)( passnext );
 			//if( memcmp( &old, &data, sizeof(data) ) == 0 ) prev = old;
 		}
@@ -352,17 +352,17 @@ JNIEXPORT int cmd( simlab cmnd ) {
 	if( *command == '"' ) {
 		command[ strlen(command)-1 ] = 0;
 		simlab str;
-		str.buffer = (int)(command+1);
+		str.buffer = (long)(command+1);
 		echo( str );
 	} else { //if( *command != '\n' ) {
 		char*	result = strtok( command, " (_\n" );
 		int func = dsym( module, result );
 
-		if( func != 0 ) {//&& (java == 0 || func == (int)store || func == (int)fetch || func == (int)Class || func == (int)New || func == (int)Data || func == (int)create) ) {
+		if( func != 0 ) {//&& (java == 0 || func == (long)store || func == (long)fetch || func == (long)Class || func == (long)New || func == (long)Data || func == (long)create) ) {
 			simlab old = data;
 			memset( &passnext, 0, sizeof(passnext) );
 			parseParameters( 0 );
-			passcurr = (int)&passnext;
+			passcurr = (long)&passnext;
 			//if( *(int*)&passnext != 0 ) printf( "%s\n", (char*)*(int*)&passnext );
 			((int (*)(...))func)( passnext );
 			if( old.buffer != 0 && (data.buffer < old.buffer || data.buffer > old.buffer+bytelength(old.type,old.length)) ) {
@@ -444,7 +444,7 @@ JNIEXPORT int parse( simlab fname, simlab func ) {
 	s_line.type = 8;
 
 	while( res != NULL && strncmp( line, quit, sizeof(quit)-1 ) ) {
-		s_line.buffer = (int)line;
+		s_line.buffer = (long)line;
 		s_line.length = strlen(line);
 		if( *line != '\n' ) fnc( s_line );
 		res = fgets( line, sizeof(line), (FILE*)f );

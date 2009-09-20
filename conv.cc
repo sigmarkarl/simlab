@@ -47,7 +47,7 @@ template <typename T,typename K> void t_conv( T* buffer, int length, int chunk, 
 	int retchunk = (chunk+c_chunk-1);
 	int retlen = retchunk*(length/chunk);
 	T* ret = new T[ retlen ];
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 	zero();
 	//int r = 0;
@@ -65,7 +65,7 @@ template <typename T,typename K> void t_deconv( T* buffer, int length, int chunk
 	int retchunk = chunk-c_chunk+1;
 	int retlen = retchunk*(length/chunk);
 	T* ret = new T[ retlen ];
-	data.buffer = (int)ret;
+	data.buffer = (long)ret;
 	data.length = retlen;
 	zero();
 	int r = 0;
@@ -91,13 +91,13 @@ public:
 		int w = i/rchunk;
 		int v = i%rchunk;
 
-		int wc = w*tl;
-		int wcc = w*kl;
+		int wt = w*tl;
+		int wk = w*kl;
 
-		int start = v-kl < 0 ? 0: v-kl;
-		int stop = v > tl ? tl : v;
-		for( int u = start; u <= stop; u++ ) {
-			r += t[wc + u]*k[wcc + kl-u-1];
+		int start = v-(kl-1) < 0 ? 0: v-(kl-1);
+		int stop = v >= tl ? tl : v+1;
+		for( int u = start; u < stop; u++ ) {
+			r += t[wt + u]*k[wk + kl + start - u - 1];
 		}
 		return r;
 	}
@@ -114,12 +114,12 @@ public:
 template <typename T> void t_conver( T buffer, int chunk, int c_chunk, int rlen ) {
 	if( data.type < 0 ) {
 		if( data.type == -66 ) {
-			data.buffer = (int)new c_conv<c_simlab<double&>&,T,double>( *(c_simlab<double&>*)data.buffer, chunk, buffer, c_chunk, rlen );
+			data.buffer = (long)new c_conv<c_simlab<double&>&,T,double>( *(c_simlab<double&>*)data.buffer, chunk, buffer, c_chunk, rlen );
 			data.length = rlen;
 		}
 	} else {
 		if( data.type == 66 ) {
-			data.buffer = (int)new c_conv<double*,T,double>( (double*)data.buffer, chunk, buffer, c_chunk, rlen );
+			data.buffer = (long)new c_conv<double*,T,double>( (double*)data.buffer, chunk, buffer, c_chunk, rlen );
 			data.type = -66;
 			data.length = rlen;
 		}

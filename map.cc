@@ -35,13 +35,13 @@ public:
 template <typename T> void t_mapper( T t, int l ) {
 	if( data.length == -1 ) {
 		if( data.type == -66 ) {
-			data.buffer = (int)new c_map< T, c_simlab<double&>&, const double& >( *(c_simlab<double&>*)data.buffer, t );
+			data.buffer = (long)new c_map< T, c_simlab<double&>&, const double& >( *(c_simlab<double&>*)data.buffer, t );
 			data.length = l;
 		}
 		//else if( data.type == -32 ) c_vmap< c_simlab<int&>& >( *(c_simlab<double&>*)value.buffer, value.length );
 	} else {
 		if( data.type == 66 ) {
-			data.buffer = (int)new c_map< T, double*, const double& >( (double*)data.buffer, t );
+			data.buffer = (long)new c_map< T, double*, const double& >( (double*)data.buffer, t );
 			data.type = -66;
 			data.length = l;
 		}
